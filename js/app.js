@@ -43,7 +43,7 @@ async function loadDevLogs() {
     const container = document.querySelector("#devlogs-container");
 
     const logs = await fetch(
-        "https://api.github.com/repos/NormalnyChomik/ftc-devlog-page/contents/public/logs"
+        "https://api.github.com/repos/NormalnyChomik/ftc-devlog-page/contents/public/devlogs"
     );
 
     const files = await logs.json()
@@ -53,7 +53,7 @@ async function loadDevLogs() {
             continue;
         }
 
-        const logResponse = await fetch(`public/logs/${file.name}`);
+        const logResponse = await fetch(`public/devlogs/${file.name}`);
         const text = await logResponse.text();
 
         const log = parseLog(text);
