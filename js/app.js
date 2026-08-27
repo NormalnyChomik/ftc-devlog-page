@@ -16,15 +16,18 @@ async function addLog(log, container) {
     const templateResponse = await fetch("views/log.template.html");
     const template = await templateResponse.text();
 
-    //we clone the template div to generate our log containers
     const wrapper = document.createElement("div");
     wrapper.innerHTML = template;
 
-    const element = wrapper.firstElementChild;
+    const element = wrapper.querySelector(".log");
 
     element.querySelector(".log-title").textContent = log.title;
     element.querySelector(".log-date").textContent = log.date;
-    element.href = `?page=${log.page}`;
+    element.querySelector(".log-content").textContent = log.content;
+
+    element.querySelector(".log-link").addEventListener("click", () => {
+        element.classList.toggle("open");
+    });
 
     container.appendChild(element);
 }
@@ -39,14 +42,31 @@ async function addComingSoon(container) {
     container.appendChild(wrapper.firstElementChild);
 }
 
+async function sortLogsByDate(logs, container) {
+    logs.sort((a, b) => {
+        const [dayA, monthA, yearA] = a.date.split("/");
+        const [dayB, monthB, yearB] = b.date.split("/");
+
+        const dateA = new Date(yearA, monthA - 1, dayA);
+        const dateB = new Date(yearB, monthB - 1, dayB);
+
+        return dateB - dateA;
+    });
+
+    for (const log of logs) {
+        await addLog(log, container);
+    }
+}
+
 async function loadDevLogs() {
     const container = document.querySelector("#devlogs-container");
 
-    const logs = await fetch(
+    const logsResponse = await fetch(
         "https://api.github.com/repos/NormalnyChomik/ftc-devlog-page/contents/public/devlogs"
     );
+    const logs = [];
 
-    const files = await logs.json()
+    const files = await logsResponse.json()
 
     for (const file of files) {
         if (file.type !== "file" || !file.name.endsWith(".txt")) {
@@ -56,10 +76,10 @@ async function loadDevLogs() {
         const logResponse = await fetch(`public/devlogs/${file.name}`);
         const text = await logResponse.text();
 
-        const log = parseLog(text);
-        await addLog(log, container);
+        logs.push(parseLog(text));
     }
 
+    await sortLogsByDate(logs, container);
     await addComingSoon(container);
 }
 
