@@ -5,7 +5,7 @@
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background-color: bisque;
+    background-color: #86380b;
     color: #222;
 }
 
@@ -15,7 +15,6 @@ body {
     margin: 0 auto;
     display: flex;
     flex-direction: column;
-    background-color: darkslateblue;
     border-left: 1px solid #ccc;
     border-right: 1px solid #ccc;
 }
@@ -24,10 +23,10 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 30px 20px;
-    background-color: darkslateblue;
+    background-color: #df9600;
     text-decoration: none;
     color: white;
+    border-bottom: 10px solid #86380b;
 }
 
 #header-title {
@@ -38,14 +37,49 @@ body {
 }
 
 #header-logo {
-    width: 600px;
-    max-width: 80%;
+    position: relative;
+    width: 100%;
+    overflow: visible;
 }
 
-#header-logo img {
+#gradient {
+    position: relative;
+    width: 100%;
+    z-index: 1;
+}
+
+#godrays {
     display: block;
     width: 100%;
     height: auto;
+}
+
+#gradient::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, #df9600 0%, rgba(223, 150, 0, 0.5) 15%, rgba(223, 150, 0, 0.15) 30%, transparent 45%);
+    pointer-events: none;
+}
+
+#website-logo {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 45%;
+    height: auto;
+    transform: translate(-50%, -70%);
+    z-index: 3;
+}
+
+#devlog-logo {
+    position: absolute;
+    top: 90%;
+    left: 50%;
+    width: 40%;
+    height: auto;
+    transform: translate(-50%, -30%);
+    z-index: 5;
 }
 
 #content-container {
@@ -53,7 +87,7 @@ body {
     min-height: 0;
     padding: 30px;
     overflow-y: auto;
-    background-color: rgb(15 18 87 / 0.61);
+    background-color: #c17000;
 }
 
 #devlogs-container {
@@ -88,9 +122,7 @@ body {
     flex-direction: column;
     justify-content: flex-end;
     border-radius: 10px;
-    background-image:
-        linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.75)),
-        url("../public/images/logo.png");
+    background-image: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.75)), url("../public/images/logo.png");
     background-size: cover;
     background-position: center;
     color: white;
@@ -136,4 +168,27 @@ body {
         border-left: none;
         border-right: none;
     }
+}
+
+#godrays-cont {
+    position: relative;
+    width: 100%;
+}
+
+#godrays {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+#spawn-pillars {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transform: translate(-50%, 3%) scale(0.9);
+    transform-origin: center bottom;
+    z-index: 2;
 }
