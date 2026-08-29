@@ -1,7 +1,6 @@
-"use strict"
+"use strict";
 
 async function loadComponents() {
-    //keeping it extremely simple for development speed
     const header = document.querySelector("views-header");
     const content = document.querySelector("views-content");
 
@@ -24,7 +23,7 @@ async function addLog(log, container) {
     element.querySelector(".log-title").textContent = log.title;
     element.querySelector(".log-date").textContent = formatDate(log.date);
 
-    const contentContainer = element.querySelector(".log-content");
+    const contentContainer = element.querySelector(".log-content-inner");
 
     const chapters = log.content.split(/\r?\n(?=\[.*?\])/);
 
@@ -48,6 +47,8 @@ async function addLog(log, container) {
         details.appendChild(summary);
         details.appendChild(pre);
         contentContainer.appendChild(details);
+
+        setupDetailsAnimation(details, pre);
     }
 
     element.querySelector(".log-link").addEventListener("click", () => {
@@ -57,11 +58,57 @@ async function addLog(log, container) {
     container.appendChild(element);
 }
 
+function setupDetailsAnimation(details, content) {
+    details.addEventListener("toggle", () => {
+        if (!details.open) {
+            return;
+        }
+
+        content.style.maxHeight = "0px";
+        content.style.paddingTop = "0px";
+        content.style.paddingBottom = "0px";
+        content.style.opacity = "0";
+
+        requestAnimationFrame(() => {
+            content.style.maxHeight = `${content.scrollHeight}px`;
+            content.style.paddingTop = "15px";
+            content.style.paddingBottom = "15px";
+            content.style.opacity = "1";
+        });
+    });
+
+    details.querySelector("summary").addEventListener("click", event => {
+        event.preventDefault();
+
+        if (details.open) {
+            content.style.maxHeight = `${content.scrollHeight}px`;
+
+            requestAnimationFrame(() => {
+                content.style.maxHeight = "0px";
+                content.style.paddingTop = "0px";
+                content.style.paddingBottom = "0px";
+                content.style.opacity = "0";
+            });
+
+            content.addEventListener("transitionend", function handler(event) {
+                if (event.propertyName !== "max-height") {
+                    return;
+                }
+
+                details.open = false;
+                content.removeEventListener("transitionend", handler);
+            });
+        } else {
+            details.open = true;
+        }
+    });
+}
+
 function formatDate(dateString) {
     const [year, month, day] = dateString.split("-").map(Number);
 
     const date = new Date(year, month - 1, day);
-    
+
     return new Intl.DateTimeFormat(undefined, {
         day: "2-digit",
         month: "2-digit",
@@ -70,22 +117,19 @@ function formatDate(dateString) {
 }
 
 async function addComingSoon(container) {
-    const comingSoonResponse = await fetch("views/coming-soon.html");
-    const comingSoon = await comingSoonResponse.text();
+    const response = await fetch("views/coming-soon.html");
+    const html = await response.text();
 
     const wrapper = document.createElement("div");
-    wrapper.innerHTML = comingSoon;
+    wrapper.innerHTML = html;
 
     container.appendChild(wrapper.firstElementChild);
 }
 
 async function sortLogsByDate(logs, container) {
     logs.sort((a, b) => {
-        const [dayA, monthA, yearA] = a.date.split("/");
-        const [dayB, monthB, yearB] = b.date.split("/");
-
-        const dateA = new Date(yearA, monthA - 1, dayA);
-        const dateB = new Date(yearB, monthB - 1, dayB);
+        const dateA = new Date(a.date);
+        const dateB = new Date(b.date);
 
         return dateB - dateA;
     });
@@ -101,17 +145,17 @@ async function loadDevLogs() {
     const logsResponse = await fetch(
         "https://api.github.com/repos/NormalnyChomik/ftc-devlog-page/contents/public/devlogs"
     );
-    const logs = [];
 
-    const files = await logsResponse.json()
+    const files = await logsResponse.json();
+    const logs = [];
 
     for (const file of files) {
         if (file.type !== "file" || !file.name.endsWith(".txt")) {
             continue;
         }
 
-        const logResponse = await fetch(`public/devlogs/${file.name}`);
-        const text = await logResponse.text();
+        const response = await fetch(`public/devlogs/${file.name}`);
+        const text = await response.text();
 
         logs.push(parseLog(text));
     }
@@ -158,6 +202,8 @@ function parseLog(text) {
 async function main() {
     await loadComponents();
     await loadDevLogs();
+
+    document.querySelector("#app-container").classList.add("loaded");
 }
 
 main();
