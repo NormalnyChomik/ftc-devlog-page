@@ -1,4 +1,0 @@
-title: This is the newest log
-date: 31/08/2026
-page: whatever
-content: Stop asking me when the next log comes out!!

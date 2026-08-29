@@ -5,18 +5,72 @@
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background-color: #86380b;
     color: #222;
+    background: #86380b;
+}
+
+body::before,
+body::after {
+    content: "";
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    width: 20%;
+    pointer-events: none;
+    z-index: 0;
+}
+
+body::before {
+    left: 0;
+    background: linear-gradient(
+        to right,
+        rgba(30, 5, 0, 0.9) 0%,
+        rgba(30, 5, 0, 0.5) 5%,
+        transparent 25%
+    );
+}
+
+body::after {
+    right: 0;
+    background: linear-gradient(
+        to left,
+        rgba(30, 5, 0, 0.9) 0%,
+        rgba(30, 5, 0, 0.5) 5%,
+        transparent 25%
+    );
 }
 
 #app-container {
+    position: relative;
     width: 80%;
     min-height: 100vh;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
-    border-left: 1px solid #ccc;
-    border-right: 1px solid #ccc;
+    border-left: 10px solid black;
+    border-right: 10px solid black;
+}
+
+#app-container::before,
+#app-container::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 50px;
+    background-image: url("../public/images/BraidedAccent.png");
+    background-repeat: repeat-y;
+    background-size: 60px auto;
+    pointer-events: none;
+    z-index: 10;
+}
+
+#app-container::before {
+    left: -35px;
+}
+
+#app-container::after {
+    right: -25px;
 }
 
 #header-container {
@@ -24,9 +78,9 @@ body {
     flex-direction: column;
     align-items: center;
     background-color: #df9600;
-    text-decoration: none;
-    color: white;
     border-bottom: 10px solid #86380b;
+    color: white;
+    text-decoration: none;
 }
 
 #header-title {
@@ -48,6 +102,11 @@ body {
     z-index: 1;
 }
 
+#godrays-cont {
+    position: relative;
+    width: 100%;
+}
+
 #godrays {
     display: block;
     width: 100%;
@@ -58,8 +117,15 @@ body {
     content: "";
     position: absolute;
     inset: 0;
-    background: linear-gradient(to bottom, #df9600 0%, rgba(223, 150, 0, 0.5) 15%, rgba(223, 150, 0, 0.15) 30%, transparent 45%);
+    background: linear-gradient(
+        to bottom,
+        #df9600 0%,
+        rgba(223, 150, 0, 0.5) 15%,
+        rgba(223, 150, 0, 0.15) 30%,
+        transparent 45%
+    );
     pointer-events: none;
+    z-index: 3;
 }
 
 #website-logo {
@@ -69,7 +135,19 @@ body {
     width: 45%;
     height: auto;
     transform: translate(-50%, -70%);
-    z-index: 3;
+    z-index: 5;
+}
+
+#spawn-pillars {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transform: translate(-50%, 3%) scale(0.9);
+    transform-origin: center bottom;
+    z-index: 2;
 }
 
 #devlog-logo {
@@ -94,6 +172,7 @@ body {
     display: flex;
     flex-direction: column;
     gap: 20px;
+    margin-top: 2em;
 }
 
 .log-link {
@@ -102,9 +181,9 @@ body {
     padding: 0;
     border: none;
     background: none;
+    color: inherit;
     text-align: left;
     text-decoration: none;
-    color: inherit;
     cursor: pointer;
     transition: transform 0.15s ease;
 }
@@ -115,23 +194,50 @@ body {
 
 .log-container {
     position: relative;
-    overflow: hidden;
     min-height: 140px;
     padding: 25px;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
+    align-items: flex-start;
+    overflow: hidden;
     border-radius: 10px;
-    background-image: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.75)), url("../public/images/logo.png");
-    background-size: cover;
-    background-position: center;
     color: white;
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+}
+
+.log-container::before {
+    content: "";
+    position: absolute;
+    inset: -20%;
+    background:
+        linear-gradient(
+            rgba(0, 0, 0, 0.55),
+            rgba(0, 0, 0, 0.75)
+        ),
+        url("../public/images/Space.png") 30% 60% / cover no-repeat;
+    z-index: 0;
+}
+
+.log-title,
+.log-separator,
+.log-date {
+    position: relative;
+    z-index: 1;
 }
 
 .log-title {
     font-size: 24px;
     font-weight: bold;
+}
+
+.log-separator {
+    width: 100%;
+    height: 2px;
+    margin: 8px 0;
+    background-image: url("../public/images/GradientFill.png");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
 }
 
 .log-date {
@@ -144,22 +250,46 @@ body {
     display: none;
     padding: 20px;
     border: 1px solid #ccc;
+    border-top: none;
     border-radius: 0 0 10px 10px;
     background-color: black;
     color: white;
-    border-top: none;
 }
 
 .log.open .log-content {
     display: block;
 }
 
+.log-content details {
+    margin-bottom: 15px;
+}
+
+.log-content summary {
+    padding: 12px;
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.log-content pre {
+    margin: 0;
+    padding: 15px;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+    font-family: inherit;
+    line-height: 1.5;
+}
+
 #coming-soon {
     padding: 60px 20px;
     text-align: center;
-    font-size: 48px;
-    font-weight: bold;
-    color: white;
+}
+
+#coming-soon img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0 auto;
 }
 
 @media (max-width: 700px) {
@@ -168,27 +298,11 @@ body {
         border-left: none;
         border-right: none;
     }
-}
 
-#godrays-cont {
-    position: relative;
-    width: 100%;
-}
-
-#godrays {
-    display: block;
-    width: 100%;
-    height: auto;
-}
-
-#spawn-pillars {
-    position: absolute;
-    left: 50%;
-    bottom: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    transform: translate(-50%, 3%) scale(0.9);
-    transform-origin: center bottom;
-    z-index: 2;
+    #app-container::before,
+    #app-container::after,
+    body::before,
+    body::after {
+        display: none;
+    }
 }

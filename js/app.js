@@ -22,14 +22,51 @@ async function addLog(log, container) {
     const element = wrapper.querySelector(".log");
 
     element.querySelector(".log-title").textContent = log.title;
-    element.querySelector(".log-date").textContent = log.date;
-    element.querySelector(".log-content").textContent = log.content;
+    element.querySelector(".log-date").textContent = formatDate(log.date);
+
+    const contentContainer = element.querySelector(".log-content");
+
+    const chapters = log.content.split(/\r?\n(?=\[.*?\])/);
+
+    for (const chapter of chapters) {
+        const match = chapter.match(/^\[(.*?)\]\r?\n?([\s\S]*)$/);
+
+        if (!match) {
+            continue;
+        }
+
+        const chapterTitle = match[1];
+        const chapterContent = match[2].trim();
+
+        const details = document.createElement("details");
+        const summary = document.createElement("summary");
+        const pre = document.createElement("pre");
+
+        summary.textContent = chapterTitle;
+        pre.textContent = chapterContent;
+
+        details.appendChild(summary);
+        details.appendChild(pre);
+        contentContainer.appendChild(details);
+    }
 
     element.querySelector(".log-link").addEventListener("click", () => {
         element.classList.toggle("open");
     });
 
     container.appendChild(element);
+}
+
+function formatDate(dateString) {
+    const [year, month, day] = dateString.split("-").map(Number);
+
+    const date = new Date(year, month - 1, day);
+
+    return new Intl.DateTimeFormat(undefined, {
+        day: "numeric",
+        month: "long",
+        year: "numeric"
+    }).format(date);
 }
 
 async function addComingSoon(container) {
@@ -85,8 +122,22 @@ async function loadDevLogs() {
 
 function parseLog(text) {
     const log = {};
+    const lines = text.split(/\r?\n/);
 
-    for (const line of text.split("\n")) {
+    let inContent = false;
+    const content = [];
+
+    for (const line of lines) {
+        if (inContent) {
+            content.push(line);
+            continue;
+        }
+
+        if (line.trim().toLowerCase() === "content:") {
+            inContent = true;
+            continue;
+        }
+
         const separator = line.indexOf(":");
 
         if (separator === -1) {
@@ -98,6 +149,8 @@ function parseLog(text) {
 
         log[key] = value;
     }
+
+    log.content = content.join("\n");
 
     return log;
 }
