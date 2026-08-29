@@ -192,6 +192,18 @@ body::after {
     transform: translateY(-2px);
 }
 
+.log.open .log-link:hover {
+    transform: none;
+}
+
+.log.open .log-container {
+    border-radius: 10px 10px 0 0;
+}
+
+.log.open .log-content {
+    border-radius: 0 0 10px 10px;
+}
+
 .log-container {
     position: relative;
     min-height: 140px;
@@ -242,14 +254,12 @@ body::after {
 
 .log-date {
     margin-top: 6px;
-    font-size: 14px;
-    opacity: 0.75;
+    font-size: 26px;
 }
 
 .log-content {
     display: none;
     padding: 20px;
-    border: 1px solid #ccc;
     border-top: none;
     border-radius: 0 0 10px 10px;
     background-color: black;
@@ -278,6 +288,7 @@ body::after {
     overflow-wrap: break-word;
     font-family: inherit;
     line-height: 1.5;
+    font-size: 24px;
 }
 
 #coming-soon {
@@ -305,4 +316,22 @@ body::after {
     body::after {
         display: none;
     }
+}
+
+.log-content summary {
+    padding: 12px 15px;
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+    border-radius: 8px;
+    list-style: none;
+}
+
+.log-content summary::-webkit-details-marker {
+    display: none;
+}
+
+.log-content summary:hover {
+    background: #9d4815;
 }
