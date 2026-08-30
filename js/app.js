@@ -76,7 +76,8 @@ function toggleLog(element) {
 function openLog(element, content) {
     element.classList.add("open");
 
-    content.style.maxHeight = `${content.scrollHeight}px`;
+    const height = content.scrollHeight + 50 //safety margin
+    content.style.maxHeight = `${height}px`;
     content.style.opacity = "1";
     content.style.paddingTop = "20px";
     content.style.paddingBottom = "20px";
