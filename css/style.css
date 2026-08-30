@@ -382,16 +382,14 @@ body::after {
     body::after {
         display: none;
     }
-
-    .log-asset {
-        width: 10em;
-    }
 }
 
-@media (max-width: 1200px) {
-    .log-asset {
-        width: 20em;
-    }
+.log-asset {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 20px auto;
+    object-fit: contain;
 }
 
 #loading {
