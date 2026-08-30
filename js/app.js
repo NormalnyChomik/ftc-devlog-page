@@ -190,23 +190,40 @@ async function sortLogsByDate(logs, container) {
 
 async function loadDevLogs() {
     const container = document.querySelector("#devlogs-container");
+    const cacheKey = "devlogs-cache";
 
-    const response = await fetch(
-        "https://api.github.com/repos/NormalnyChomik/ftc-devlog-page/contents/public/devlogs"
-    );
+    let logs;
 
-    const files = await response.json();
-    const logs = [];
+    const cached = localStorage.getItem(cacheKey);
 
-    for (const file of files) {
-        if (file.type !== "file" || !file.name.endsWith(".txt")) {
-            continue;
+    if (cached) {
+        try {
+            logs = JSON.parse(cached);
+        } catch {
+            localStorage.removeItem(cacheKey);
+        }
+    }
+
+    if (!logs) {
+        const response = await fetch(
+            "https://api.github.com/repos/NormalnyChomik/ftc-devlog-page/contents/public/devlogs"
+        );
+
+        const files = await response.json();
+        logs = [];
+
+        for (const file of files) {
+            if (file.type !== "file" || !file.name.endsWith(".txt")) {
+                continue;
+            }
+
+            const response = await fetch(`public/devlogs/${file.name}`);
+            const text = await response.text();
+
+            logs.push(parseLog(text));
         }
 
-        const response = await fetch(`public/devlogs/${file.name}`);
-        const text = await response.text();
-
-        logs.push(parseLog(text));
+        localStorage.setItem(cacheKey, JSON.stringify(logs));
     }
 
     await sortLogsByDate(logs, container);
