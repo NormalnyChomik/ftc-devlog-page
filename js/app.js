@@ -266,10 +266,19 @@ function parseLog(text) {
 }
 
 async function main() {
+    const app = document.querySelector("#app-container");
+    const loading = document.querySelector("#loading");
+
     await loadComponents();
     await loadDevLogs();
 
-    document.querySelector("#app-container").classList.add("loaded");
+    app.classList.add("loaded");
+
+    loading.classList.add("hidden");
+
+    loading.addEventListener("transitionend", () => {
+        loading.remove();
+    }, { once: true });
 }
 
 main();
