@@ -274,10 +274,12 @@ async function main() {
 
     app.classList.add("loaded");
 
-    loading.classList.add("hidden");
+    app.addEventListener("animationend", () => {
+        loading.classList.add("hidden");
 
-    loading.addEventListener("transitionend", () => {
-        loading.remove();
+        loading.addEventListener("transitionend", () => {
+            loading.remove();
+        }, { once: true });
     }, { once: true });
 }
 

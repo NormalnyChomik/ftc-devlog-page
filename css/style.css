@@ -388,14 +388,18 @@ body::after {
 #loading {
     position: fixed;
     inset: 0;
+    z-index: 1000;
+
     display: flex;
     align-items: center;
     justify-content: center;
+
+    background: #86380b;
+    color: white;
+
     font-size: 28px;
     font-weight: bold;
-    color: white;
-    background: #86380b;
-    z-index: 100;
+
     opacity: 1;
     transition: opacity 0.5s ease;
 }
