@@ -2,54 +2,55 @@ title: The future of everything, everywhere, all at once
 date: 2026-08-31
 page: log-1
 content:
-[The future of FTC!]
-
+[★ The future of FTC!]
 
 Hello everyone, Isn’t this quite a strange place to be reading the news! With all the new things that just happened everywhere, all at once, I think you may be able to tell that some big things are happening with the game… so what exactly are these big things?
 
+[asset/img/LineBreak.png]
 
+Behind the scenes, there has been a rising, bubbling wave of discussions regarding the state of the game, server, and team. Evidently, there were a lot of problems to address, some more difficult than others, which have now made us see the game under an entirely different lens. That’s what I’m going to explain for the first half of this log, our new vision of FTC:
 
-Behind the scenes, there has been a rising, bubbling wave of discussions regarding the state of the game, server and team. Evidently, there were a lot of problems to address, some more difficult than others which have now made us see the game under an entirely different lens. That’s what I’m going to explain for the first half of this log, our new vision of FTC:
-
-To start things off with the most fundamental change, which we are a little afraid might have people a little split, is that we are adopting a much more progressive view of the game, rather than a conservative one. That’s to say: Moving on, we will be a lot more eager to change parts of the game in order to make it better and — most importantly — more fun to play, even if that means altering what could be pretty iconic chunks of FTC.
+To start things off with the most fundamental change, which we are a little afraid might have people a little split, we are adopting a much more progressive view of the game, rather than a conservative one. That’s to say, moving forwards, we will be a lot more eager to change parts of the game in order to make it better and — most importantly — more fun to play, even if that means altering what could be pretty iconic chunks of FTC.
 
 Understandably, that sounds pretty scary, but I can promise the fact that any changes that may come to the game will have a LOT of respect towards FTC’s legacy. We plan to preserve the game’s charm and special quirks at all costs! You’ll actually hear more about this in the near future!
 
 This letting-go of the past also means that any future content that was set up by the old team may or may not be abandoned. You should take teasers and rumours from the past with a grain of salt – is what I’m trying to say – as the choices and plans that built the foundation of those teasers were put down yeaaarssss ago, some of which may have been in poor judgement… in hindsight…
 
-
+[asset/img/LineBreak.png]
 
 Dex+ has also shifted quite a lot in the tumultuous swirly and twirly couple of days leading up to this announcement.
 
 While working on the game and brainstorming over potential content, we stumbled across a pretty serious problem:
 
 
-The developers had two different visions for the game, and those two visions could hardly coexist.
+[i][center]The developers had two different visions for the game, and those two visions could hardly coexist.[/center][/i]
 
 
 One half of the developers wanted to keep development of the game fun, after all, working on FTC is mostly a passion project and the game was born out of that fun mindset. This group is now fully responsible for creating the dex+ chomiks and they won’t be following the modern quality assurance standards, at the benefit of more frequent updates.
 
 The other half wanted to make sure that the last few planned chomiks will be as good as they can be, and that once FTC is finished, it can be remembered in a great light. As such, this team will take a much more critical approach to development, with a large focus on quality. You can expect this team to release updates such as our last areas or chomiks like Awakened Chomik.
 
-
+[asset/img/LineBreak.png]
 
 On that topic, some of the things far out on the horizon that a lot of you are looking forward to are the topic of a bunch of questions. One thing I can say is that, while we are planning to release a few chomiks more difficult than anything the game has seen before, our main priority is quality over difficulty, which also means the gameplay might take a surprising turn! Hopefully those updates will be well received ★
 
-
+[asset/img/LineBreak.png]
 
 Now that you’ve been made aware of all this background bonanza, it may be easier to understand why the dex+ update is so late. The shift in perspective on the game has also, naturally, affected this release, which is why there’s a lot more work to do there than we previously considered… when we said the update would release in a week or two 🥲
 
-
+[asset/img/LineBreak.png]
 
 The last thing I have to address when it comes to the future of the game, is this very website! Pretty cool isn’t it? Well, evidently, we didn’t make an entire website for one announcement. We thought it would be a good idea to – when the time is right – release a devlog explaining our design philosophy when it comes to hot topics that people may not fully trust us with. I hope these will be able to prove that we are being super considerate about everything and  not powering through new content blindly!
 
-[The future of the server!]
+[asset/img/Star.png]
+
+[★ The future of the server!]
 
 With the chaos of this announcement, those who are keen may have noticed things starting to spontaneously move around them! That is because our conversations about the future weren’t just about the game, but the community as well.
 
 Undeniably, the community has had its ups and downs throughout the years. Whether right now we find ourselves in another down or another up is hard to tell, but we can at least make sure the tracks in front of us are going up⮭. That’s why we are putting down some pillars to make sure the community can stay UP⮭ !
 
-
+[asset/img/LineBreak.png]
 
 First things first, we want to introduce some rules pertaining to recent developments. After some lengthy debating, the staff have collectively agreed to put a ban on all AI generated media. Right alongside that, we also want to put an end to very low quality humour that might be borderline insensitive, take for example jokes about Jeffery Epstein or Israel.
 
@@ -57,8 +58,7 @@ Now, we are fully expecting some people to find this ban excessive but it’s im
 
 We understand that the banning of any form of humor is a tough stance to take upon an entire community, but think about it as a fellowship too. People will inevitably be joining this server and see that people joke about this messed up stuff, grow a horrible impression of us as a whole, leave, and potentially spread word around about what kind of a community we have. We want a more positive community with more understanding, and we feel this is an important decision to reach that goal.
 
-
-
+[asset/img/LineBreak.png]
 
 You guys aren’t the only peeps having to conform to new rules! To make sure things in the server are kept fair and clean, we also put forward some staff rules as well, so you can expect — for example — tickets to be a lot more fun and helpful.
 
@@ -66,10 +66,10 @@ We also want to shift our focus onto taking stronger action against instances of
 
 To help with this, we strongly recommend that whenever you or someone around you feels bad because of a rude comment, you should open up a ticket and send us some screenshots, we’ll take a look at it!
 
-
+[asset/img/LineBreak.png]
 
 We also added some guidelines to posting suggestions! The reason I’m pointing these out specifically despite the fact we pretty much modernized every other ruleset in the server, is because I want to make sure that everyone knows… we do ACTUALLY read the suggestions! Matter of fact we have already added plenty of them to a to-be-released build, and we could add even more if the members understand what we value most in suggestions!
 
+[asset/img/LineBreak.png]
 
-
-To wrap things up, this unleashed dam of new changes and information will definitely raise some questions that weren’t covered in this document, which is why we think it’s a great idea to host a small Q&A where you can ask just about anything when it comes to the game! It’s going to be open for about a day so make sure you join while you can! Thanks for reading!!!!!!!!!
+[i][b]To wrap things up[/b][/i], this unleashed dam of new changes and information will definitely raise some questions that weren’t covered in this document, which is why we think it’s a great idea to host a small Q&A where you can ask just about anything when it comes to the game! It’s going to be open for about a day so make sure you join while you can! Thanks for reading!!!!!!!!!

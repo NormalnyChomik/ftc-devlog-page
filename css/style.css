@@ -242,8 +242,7 @@ body::after {
     inset: -20%;
     background:
         linear-gradient(
-            rgba(0, 0, 0, 0.55),
-            rgba(0, 0, 0, 0.75)
+            rgba(0, 0, 0, 0.25)
         ),
         url("../public/images/Space.png") 30% 60% / cover no-repeat;
     z-index: 0;
