@@ -152,8 +152,8 @@ function parseMarkup(text) {
     let html = escapeHtml(text);
 
     html = html.replace(
-        /\[center\]([\s\S]*?)\[\/center\]/gi,
-        '<span class="text-center">$1</span>'
+    /\[center\]([\s\S]*?)\[\/center\]/gi,
+    '<span class="text-center">$1</span>'
     );
 
     html = html.replace(

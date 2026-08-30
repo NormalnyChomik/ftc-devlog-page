@@ -382,6 +382,16 @@ body::after {
     body::after {
         display: none;
     }
+
+    .log-asset {
+        width: 10em;
+    }
+}
+
+@media (max-width: 1200px) {
+    .log-asset {
+        width: 20em;
+    }
 }
 
 #loading {
@@ -423,4 +433,9 @@ body::after {
     to {
         transform: rotate(360deg);
     }
+}
+
+.text-center {
+    display: block;
+    text-align: center;
 }
