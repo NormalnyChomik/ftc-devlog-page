@@ -24,73 +24,43 @@ async function addLog(log, container) {
 }
 
 function renderLogContent(text, container) {
-    const blocks = splitContent(text);
+    const chapters = splitChapters(text);
 
-    for (const block of blocks) {
-        if (block.type === "chapter") {
-            createChapter(block.title, block.content, container);
-        }
-
-        if (block.type === "asset") {
-            createAsset(block.path, container);
-        }
+    for (const chapter of chapters) {
+        createChapter(
+            chapter.title,
+            chapter.content,
+            container
+        );
     }
 }
 
-function splitContent(text) {
-    const lines = text.split(/\r?\n/);
-    const blocks = [];
+function splitChapters(text) {
+    const regex = /\[chapter\]([\s\S]*?)\[\/chapter\]/gi;
+    const matches = [...text.matchAll(regex)];
+    const chapters = [];
 
-    let currentChapter = null;
-    let buffer = [];
+    for (let i = 0; i < matches.length; i++) {
+        const match = matches[i];
 
-    function flushChapter() {
-        if (!currentChapter) {
-            return;
-        }
+        const title = match[1].trim();
 
-        blocks.push({
-            type: "chapter",
-            title: currentChapter,
-            content: buffer.join("\n").trim()
+        const start = match.index + match[0].length;
+        const end = i + 1 < matches.length
+            ? matches[i + 1].index
+            : text.length;
+
+        const content = text
+            .slice(start, end)
+            .trim();
+
+        chapters.push({
+            title,
+            content
         });
-
-        currentChapter = null;
-        buffer = [];
     }
 
-    for (const line of lines) {
-        const trimmed = line.trim();
-
-        const assetMatch = trimmed.match(/^\[asset\/(.*?)\]$/);
-        const chapterMatch = trimmed.match(/^\[(?!asset\/)(.*?)\]$/);
-
-        if (assetMatch) {
-            flushChapter();
-
-            blocks.push({
-                type: "asset",
-                path: assetMatch[1]
-            });
-
-            continue;
-        }
-
-        if (chapterMatch) {
-            flushChapter();
-
-            currentChapter = chapterMatch[1];
-            continue;
-        }
-
-        if (currentChapter) {
-            buffer.push(line);
-        }
-    }
-
-    flushChapter();
-
-    return blocks;
+    return chapters;
 }
 
 function createChapter(title, text, container) {
@@ -103,7 +73,8 @@ function createChapter(title, text, container) {
     content.className = "chapter-content";
 
     summary.textContent = title;
-    content.innerHTML = parseMarkup(text);
+
+    renderChapterContent(text, content);
 
     chapter.appendChild(summary);
     chapter.appendChild(content);
@@ -113,14 +84,68 @@ function createChapter(title, text, container) {
     setupChapterAnimation(summary, content);
 }
 
-function createAsset(path, container) {
+function renderChapterContent(text, content) {
+    const assetRegex = /\[asset\/(.*?)\]/gi;
+
+    let lastIndex = 0;
+    let match;
+
+    while ((match = assetRegex.exec(text)) !== null) {
+        const before = text.slice(
+            lastIndex,
+            match.index
+        );
+
+        appendText(content, before);
+
+        const image = createAsset(match[1]);
+
+        content.appendChild(image);
+
+        lastIndex = assetRegex.lastIndex;
+    }
+
+    appendText(
+        content,
+        text.slice(lastIndex)
+    );
+}
+
+function appendText(container, text) {
+    if (!text) {
+        return;
+    }
+
+    const fragment = document.createDocumentFragment();
+    const lines = text.split(/\r?\n/);
+
+    for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+
+        if (line) {
+            const span = document.createElement("span");
+
+            span.innerHTML = parseMarkup(line);
+
+            fragment.appendChild(span);
+        }
+
+        if (i < lines.length - 1) {
+            fragment.appendChild(document.createTextNode("\n"));
+        }
+    }
+
+    container.appendChild(fragment);
+}
+
+function createAsset(path) {
     const image = document.createElement("img");
 
     image.className = "log-asset";
     image.src = `public/${path}`;
     image.alt = "";
 
-    container.appendChild(image);
+    return image;
 }
 
 function parseMarkup(text) {
@@ -140,8 +165,6 @@ function parseMarkup(text) {
         /\[b\]([\s\S]*?)\[\/b\]/gi,
         "<strong>$1</strong>"
     );
-
-    html = html.replace(/\n/g, "<br>");
 
     return html;
 }
@@ -167,10 +190,14 @@ function toggleLog(element) {
 function openLog(element, content) {
     element.classList.add("open");
 
-    content.style.maxHeight = `${content.scrollHeight}px`;
+    content.style.maxHeight = "0px";
     content.style.opacity = "1";
     content.style.paddingTop = "20px";
     content.style.paddingBottom = "20px";
+
+    requestAnimationFrame(() => {
+        content.style.maxHeight = `${content.scrollHeight}px`;
+    });
 
     content.addEventListener("transitionend", function handler(event) {
         if (event.propertyName !== "max-height") {
@@ -211,10 +238,19 @@ function setupChapterAnimation(summary, content) {
 function openChapter(content) {
     content.classList.add("open");
 
-    content.style.maxHeight = `${content.scrollHeight}px`;
-    content.style.paddingTop = "15px";
-    content.style.paddingBottom = "15px";
-    content.style.opacity = "1";
+    content.style.maxHeight = "0px";
+    content.style.paddingTop = "0px";
+    content.style.paddingBottom = "0px";
+    content.style.opacity = "0";
+
+    requestAnimationFrame(() => {
+        const height = content.scrollHeight;
+
+        content.style.maxHeight = `${height}px`;
+        content.style.paddingTop = "15px";
+        content.style.paddingBottom = "15px";
+        content.style.opacity = "1";
+    });
 
     content.addEventListener("transitionend", function handler(event) {
         if (event.propertyName !== "max-height") {
@@ -243,7 +279,9 @@ function closeChapter(content) {
 }
 
 function formatDate(dateString) {
-    const [year, month, day] = dateString.split("-").map(Number);
+    const [year, month, day] = dateString
+        .split("-")
+        .map(Number);
 
     const date = new Date(year, month - 1, day);
 
@@ -278,7 +316,7 @@ async function loadDevLogs() {
     const container = document.querySelector("#devlogs-container");
     const cacheKey = "devlogs-cache";
 
-    let logs;
+    let logs = null;
 
     const cached = localStorage.getItem(cacheKey);
 
@@ -300,17 +338,26 @@ async function loadDevLogs() {
         logs = [];
 
         for (const file of files) {
-            if (file.type !== "file" || !file.name.endsWith(".txt")) {
+            if (
+                file.type !== "file" ||
+                !file.name.endsWith(".txt")
+            ) {
                 continue;
             }
 
-            const response = await fetch(`public/devlogs/${file.name}`);
+            const response = await fetch(
+                `public/devlogs/${file.name}`
+            );
+
             const text = await response.text();
 
             logs.push(parseLog(text));
         }
 
-        localStorage.setItem(cacheKey, JSON.stringify(logs));
+        localStorage.setItem(
+            cacheKey,
+            JSON.stringify(logs)
+        );
     }
 
     await sortLogsByDate(logs, container);
