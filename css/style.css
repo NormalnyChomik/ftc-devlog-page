@@ -52,6 +52,10 @@ body::after {
     opacity: 0;
 }
 
+#app-container.loaded {
+    animation: page-enter 1.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
 #app-container::before,
 #app-container::after {
     content: "";
@@ -72,22 +76,6 @@ body::after {
 
 #app-container::after {
     right: -25px;
-}
-
-#app-container.loaded {
-    animation: page-enter 1.2s cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-
-@keyframes page-enter {
-    from {
-        opacity: 0;
-        transform: translateY(25px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
 }
 
 #header-container {
@@ -130,6 +118,17 @@ body::after {
     z-index: 1;
 }
 
+#godrays-cont {
+    position: relative;
+    width: 100%;
+}
+
+#godrays {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
 #gradient::after {
     content: "";
     position: absolute;
@@ -143,17 +142,6 @@ body::after {
     );
     pointer-events: none;
     z-index: 3;
-}
-
-#godrays-cont {
-    position: relative;
-    width: 100%;
-}
-
-#godrays {
-    display: block;
-    width: 100%;
-    height: auto;
 }
 
 #website-logo {
@@ -217,7 +205,7 @@ body::after {
     color: inherit;
     text-align: left;
     cursor: pointer;
-    transition: transform 0.15s ease;
+    transition: transform 0.2s ease;
 }
 
 .log-link:hover {
@@ -302,38 +290,35 @@ body::after {
 }
 
 .log.open .log-content {
-    max-height: 100000px;
-    padding: 20px;
     opacity: 1;
 }
 
-.log-content details {
+.log-content-inner {
+    min-height: 0;
+}
+
+.chapter {
     margin: 0 0 15px;
 }
 
-.log-content details:last-child {
+.chapter:last-child {
     margin-bottom: 0;
 }
 
-.log-content summary {
+.chapter-summary {
     padding: 12px 15px;
     cursor: pointer;
     font-size: 20px;
     font-weight: bold;
     color: white;
     border-radius: 8px;
-    list-style: none;
 }
 
-.log-content summary::-webkit-details-marker {
-    display: none;
-}
-
-.log-content summary:hover {
+.chapter-summary:hover {
     background: #9d4815;
 }
 
-.log-content pre {
+.chapter-content {
     max-height: 0;
     overflow: hidden;
     margin: 0;
@@ -344,14 +329,13 @@ body::after {
     line-height: 1.5;
     font-size: 24px;
     opacity: 0;
-
     transition:
         max-height 1.6s cubic-bezier(0.16, 1, 0.3, 1),
-        padding 1s ease,
-        opacity 0.8s ease;
+        padding 0.8s ease,
+        opacity 0.6s ease;
 }
 
-.log-content details.open pre {
+.chapter-content.open {
     opacity: 1;
 }
 
@@ -374,6 +358,18 @@ body::after {
     margin: 0 auto;
 }
 
+@keyframes page-enter {
+    from {
+        opacity: 0;
+        transform: translateY(25px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 @media (max-width: 700px) {
     #app-container {
         width: 100%;
@@ -386,21 +382,5 @@ body::after {
     body::before,
     body::after {
         display: none;
-    }
-
-    #coming-soon {
-        width: 100%;
-    }
-
-    .log-title {
-        font-size: 18px;
-    }
-
-    .log-date {
-        font-size: 16px;
-    }
-
-    .log-content pre {
-        font-size: 18px;
     }
 }

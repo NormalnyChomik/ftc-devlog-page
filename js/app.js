@@ -12,8 +12,8 @@ async function loadComponents() {
 }
 
 async function addLog(log, container) {
-    const templateResponse = await fetch("views/log.template.html");
-    const template = await templateResponse.text();
+    const response = await fetch("views/log.template.html");
+    const template = await response.text();
 
     const wrapper = document.createElement("div");
     wrapper.innerHTML = template;
@@ -27,8 +27,8 @@ async function addLog(log, container) {
 
     const chapters = log.content.split(/\r?\n(?=\[.*?\])/);
 
-    for (const chapter of chapters) {
-        const match = chapter.match(/^\[(.*?)\]\r?\n?([\s\S]*)$/);
+    for (const chapterText of chapters) {
+        const match = chapterText.match(/^\[(.*?)\]\r?\n?([\s\S]*)$/);
 
         if (!match) {
             continue;
@@ -37,71 +37,119 @@ async function addLog(log, container) {
         const chapterTitle = match[1];
         const chapterContent = match[2].trim();
 
-        const details = document.createElement("details");
-        const summary = document.createElement("summary");
-        const pre = document.createElement("pre");
+        const chapter = document.createElement("div");
+        const summary = document.createElement("div");
+        const content = document.createElement("pre");
+
+        chapter.className = "chapter";
+        summary.className = "chapter-summary";
+        content.className = "chapter-content";
 
         summary.textContent = chapterTitle;
-        pre.textContent = chapterContent;
+        content.textContent = chapterContent;
 
-        details.appendChild(summary);
-        details.appendChild(pre);
-        contentContainer.appendChild(details);
+        chapter.appendChild(summary);
+        chapter.appendChild(content);
 
-        setupDetailsAnimation(details, pre);
+        contentContainer.appendChild(chapter);
+
+        setupChapterAnimation(summary, content);
     }
 
     element.querySelector(".log-link").addEventListener("click", () => {
-        element.classList.toggle("open");
+        toggleLog(element);
     });
 
     container.appendChild(element);
 }
 
-function setupDetailsAnimation(details, content) {
-    details.addEventListener("toggle", () => {
-        if (!details.open) {
+function toggleLog(element) {
+    const content = element.querySelector(".log-content");
+
+    if (element.classList.contains("open")) {
+        closeLog(element, content);
+    } else {
+        openLog(element, content);
+    }
+}
+
+function openLog(element, content) {
+    element.classList.add("open");
+
+    content.style.maxHeight = `${content.scrollHeight}px`;
+    content.style.opacity = "1";
+    content.style.paddingTop = "20px";
+    content.style.paddingBottom = "20px";
+
+    content.addEventListener("transitionend", function handler(event) {
+        if (event.propertyName !== "max-height") {
             return;
         }
 
+        if (element.classList.contains("open")) {
+            content.style.maxHeight = "none";
+        }
+
+        content.removeEventListener("transitionend", handler);
+    });
+}
+
+function closeLog(element, content) {
+    content.style.maxHeight = `${content.scrollHeight}px`;
+
+    requestAnimationFrame(() => {
+        content.style.maxHeight = "0px";
+        content.style.opacity = "0";
+        content.style.paddingTop = "0px";
+        content.style.paddingBottom = "0px";
+    });
+
+    element.classList.remove("open");
+}
+
+function setupChapterAnimation(summary, content) {
+    summary.addEventListener("click", () => {
+        if (content.classList.contains("open")) {
+            closeChapter(content);
+        } else {
+            openChapter(content);
+        }
+    });
+}
+
+function openChapter(content) {
+    content.classList.add("open");
+
+    const height = content.scrollHeight + 50 //safety margin
+    content.style.maxHeight = `${height}px`;
+    content.style.paddingTop = "15px";
+    content.style.paddingBottom = "15px";
+    content.style.opacity = "1";
+
+    content.addEventListener("transitionend", function handler(event) {
+        if (event.propertyName !== "max-height") {
+            return;
+        }
+
+        if (content.classList.contains("open")) {
+            content.style.maxHeight = "none";
+        }
+
+        content.removeEventListener("transitionend", handler);
+    });
+}
+
+function closeChapter(content) {
+    content.style.maxHeight = `${content.scrollHeight}px`;
+
+    requestAnimationFrame(() => {
         content.style.maxHeight = "0px";
         content.style.paddingTop = "0px";
         content.style.paddingBottom = "0px";
         content.style.opacity = "0";
-
-        requestAnimationFrame(() => {
-            content.style.maxHeight = `${content.scrollHeight}px`;
-            content.style.paddingTop = "15px";
-            content.style.paddingBottom = "15px";
-            content.style.opacity = "1";
-        });
     });
 
-    details.querySelector("summary").addEventListener("click", event => {
-        event.preventDefault();
-
-        if (details.open) {
-            content.style.maxHeight = `${content.scrollHeight}px`;
-
-            requestAnimationFrame(() => {
-                content.style.maxHeight = "0px";
-                content.style.paddingTop = "0px";
-                content.style.paddingBottom = "0px";
-                content.style.opacity = "0";
-            });
-
-            content.addEventListener("transitionend", function handler(event) {
-                if (event.propertyName !== "max-height") {
-                    return;
-                }
-
-                details.open = false;
-                content.removeEventListener("transitionend", handler);
-            });
-        } else {
-            details.open = true;
-        }
-    });
+    content.classList.remove("open");
 }
 
 function formatDate(dateString) {
@@ -142,11 +190,11 @@ async function sortLogsByDate(logs, container) {
 async function loadDevLogs() {
     const container = document.querySelector("#devlogs-container");
 
-    const logsResponse = await fetch(
+    const response = await fetch(
         "https://api.github.com/repos/NormalnyChomik/ftc-devlog-page/contents/public/devlogs"
     );
 
-    const files = await logsResponse.json();
+    const files = await response.json();
     const logs = [];
 
     for (const file of files) {
