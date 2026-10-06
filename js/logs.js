@@ -148,12 +148,18 @@ function createAsset(path) {
     return image;
 }
 
+const gradients = {
+    halloween: ["#f9cb9c", "#e69138"],
+    ghost: ["#cfe2f3", "#6fa8dc"],
+    outerplace: ["#c27ba0", "#8e7cc3"]
+};
+
 function parseMarkup(text) {
     let html = escapeHtml(text);
 
     html = html.replace(
-    /\[center\]([\s\S]*?)\[\/center\]/gi,
-    '<span class="text-center">$1</span>'
+        /\[center\]([\s\S]*?)\[\/center\]/gi,
+        '<span class="text-center">$1</span>'
     );
 
     html = html.replace(
@@ -164,6 +170,24 @@ function parseMarkup(text) {
     html = html.replace(
         /\[b\]([\s\S]*?)\[\/b\]/gi,
         "<strong>$1</strong>"
+    );
+
+    html = html.replace(
+        /\[strike\]([\s\S]*?)\[\/strike\]/gi,
+        "<s>$1</s>"
+    );
+
+    html = html.replace(
+        /\[gradient:([a-z0-9_-]+)\]([\s\S]*?)\[\/gradient\]/gi,
+        (match, name, content) => {
+            const gradient = gradients[name.toLowerCase()];
+
+            if (!gradient) {
+                return content;
+            }
+
+            return `<span style="background: linear-gradient(to right, ${gradient[0]}, ${gradient[1]}); -webkit-background-clip: text; background-clip: text; color: transparent;">${content}</span>`;
+        }
     );
 
     return html;
@@ -182,12 +206,13 @@ function toggleLog(element) {
 
     if (element.classList.contains("open")) {
         closeLog(element, content);
-    } else {
+    } else if (!element.classList.contains("closing")) {
         openLog(element, content);
     }
 }
 
 function openLog(element, content) {
+    element.classList.remove("closing");
     element.classList.add("open");
 
     content.style.maxHeight = "0px";
@@ -213,7 +238,31 @@ function openLog(element, content) {
 }
 
 function closeLog(element, content) {
+    element.classList.remove("open");
+    element.classList.add("closing");
+
     content.style.maxHeight = `${content.scrollHeight}px`;
+
+    const finishClosing = () => {
+        element.classList.remove("closing");
+        content.removeEventListener("transitionend", handleTransitionEnd);
+    };
+
+    const handleTransitionEnd = (event) => {
+        if (
+            event.target !== content ||
+            event.propertyName !== "max-height"
+        ) {
+            return;
+        }
+
+        finishClosing();
+    };
+
+    content.addEventListener(
+        "transitionend",
+        handleTransitionEnd
+    );
 
     requestAnimationFrame(() => {
         content.style.maxHeight = "0px";
@@ -222,7 +271,7 @@ function closeLog(element, content) {
         content.style.paddingBottom = "0px";
     });
 
-    element.classList.remove("open");
+    setTimeout(finishClosing, 500);
 }
 
 function setupChapterAnimation(summary, content) {
@@ -314,50 +363,30 @@ async function sortLogsByDate(logs, container) {
 
 async function loadDevLogs() {
     const container = document.querySelector("#devlogs-container");
-    const cacheKey = "devlogs-cache";
 
-    let logs = null;
+    const response = await fetch(
+        "https://api.github.com/repos/NormalnyChomik/ftc-devlog-page/contents/public/devlogs"
+    );
 
-    const cached = localStorage.getItem(cacheKey);
+    const files = await response.json();
 
-    if (cached) {
-        try {
-            logs = JSON.parse(cached);
-        } catch {
-            localStorage.removeItem(cacheKey);
+    const logs = [];
+
+    for (const file of files) {
+        if (
+            file.type !== "file" ||
+            !file.name.endsWith(".txt")
+        ) {
+            continue;
         }
-    }
 
-    if (!logs) {
         const response = await fetch(
-            "https://api.github.com/repos/NormalnyChomik/ftc-devlog-page/contents/public/devlogs"
+            `public/devlogs/${file.name}`
         );
 
-        const files = await response.json();
+        const text = await response.text();
 
-        logs = [];
-
-        for (const file of files) {
-            if (
-                file.type !== "file" ||
-                !file.name.endsWith(".txt")
-            ) {
-                continue;
-            }
-
-            const response = await fetch(
-                `public/devlogs/${file.name}`
-            );
-
-            const text = await response.text();
-
-            logs.push(parseLog(text));
-        }
-
-        localStorage.setItem(
-            cacheKey,
-            JSON.stringify(logs)
-        );
+        logs.push(parseLog(text));
     }
 
     await sortLogsByDate(logs, container);

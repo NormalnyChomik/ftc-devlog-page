@@ -124,7 +124,7 @@ body::after {
     width: 100%;
     height: clamp(100px, 27vw, 600px);
     object-fit: cover;
-    object-position: center center;
+    object-position: center 60%;
 }
 
 #gradient::after {
@@ -226,7 +226,7 @@ body::after {
 }
 
 .log.open .log-link,
-.log.open .log-link:hover {
+.log.closing .log-link {
     transform: none;
     border-bottom: none;
     border-bottom-left-radius: 0;
@@ -262,12 +262,12 @@ body::after {
 .log-container::before {
     content: "";
     position: absolute;
-    inset: -20%;
+    inset: -30%;
     background:
         linear-gradient(
             rgba(0, 0, 0, 0.25)
         ),
-        url("../public/images/Space.png") 30% 60% / cover no-repeat;
+        url("../public/images/BabelCover.png") 300px 60% / cover no-repeat;
     z-index: 0;
 }
 

@@ -1,0 +1,70 @@
+title: Devs made a maze
+date: 2026-10-06
+page: log-2
+content:
+[chapter]★ Game stuff[/chapter]
+
+Well, here we are again! You may notice there have been some renovations around here; hopefully they are welcome! This devlog is going to focus on toppling some old walls and answering some longstanding questions about the game. Before I do that, however, there is one [i][gradient:halloween]special thing[/gradient][/i] I'd like to mention here as well.
+
+[asset/images/LineBreak.png]
+
+[i][center]“A shiver goes down your spine as the [gradient:ghost]ghosdeeri[/gradient] roll into town… They are bringing along with them…”[/center][/i]
+
+🎃 [gradient:halloween]THE 2026 HALLOWEEN ART CONTEST[/gradient] 🎃
+
+If you weren’t aware, we are hosting a month-long Chomik making contest in the server, with prizes ranging from 10k robux to guaranteed entrances in the game and cosmetic roles!
+
+We encourage as many people to join and try their best; regardless of the outcome, it’ll be a fun and unserious time (as you can see by reading the judging criteria). Thank you again to [gradient:ghost]Jay[/gradient], [gradient:ghost]Wozir[/gradient] and [gradient:ghost]Walmert[/gradient] for putting the idea forward! Looking forward to seeing you there!
+
+[asset/images/401.png]
+
+[asset/images/LineBreak.png]
+
+Now onto the serious stuff:
+
+In FTC’s very first devlog, I briefly glossed over the “Blank slate approach” we are taking from now on. For this section, I’ll cover that topic again but with a fine tooth-comb… and I’ll hopefully convince you that this is a pretty exciting thing!
+This update has been taking quite a long… long time to reach all of you, and part of the cause was the fact that the game experienced a dead period wherein poor management put the game in development hell. Now we aren’t in development hell anymore, luckily, but we are in a bit of a development limbo, as remnants from the old team’s decisions have slightly shot us in the foot.
+
+One of the problems that quickly became apparent when we moved in was that the old dev team started teasing certain projects like [color:#666666]Awakened[/color],[color:#cfe2f3] Chomik 999[/color], and [color:#d9d2e9]Fevercity Scrapworld[/color] [i]years[/i] before they should have, creating a maze of bits and bobs of undocumented content:
+
+The way these projects were sort of dangled above the community for so long — especially on the [color:#ff0000]Trello[/color]  — has kind of created an image of the game where people expect one of these huge projects to hit the servers aaaany day now, which I really can’t blame anyone for. We want to clearly state that our main focus right now is getting the game back on its feet, and while — again — it isn’t dead, it is still hospitalized 🥲
+
+But another issue was that, despite the fact that the dev team has shifted and evolved and learned so much about things like area design and puzzle design, the over-teasing that these big projects have kind of locked us into sticking to the imagery and teasers associated with these areas, which heavily limits us. As such, I want to [color:#ff0000]officially denounce the Trello[/color] and all of the teasers showing off [color:#666666]Awakened[/color],[color:#cfe2f3] 999[/color], [color:#d9d2e9]Fevercity[/color], and so on...
+
+Now this may, [i]on paper[/i], sound like a tragedy, but I want to show you the other side of the coin: Should these projects have been released as they were shown, so much of the surprise from the hunt would be thrown away. How impactful will entering Fevercity be when you have already [b][i]seen[/i][/b] the entrance? Not only that, but if we aren’t tied to simply [i]revamping[/i] what already exists, making something new starting from a blank slate will allow us to actually apply what we’ve learned, which will yield areas far, far better than what you’ve been shown so far! So from now on, only the future will tell what comes…
+
+[asset/images/Teaserfromacoldpace.png]
+
+[asset/images/LineBreak.png]
+
+[i]The developers didn’t only make one maze[/i]; the game’s file architecture and documentation are something out of this world! Especially for this update, most of the things we added required us to fix and even [i]rebuild[/i] entire parts of the game, including the entire datastore system and the way the game handles area loading… Not only that, but most content in the game is [color:#ff0000]unsorted[/color] and [color:#ff0000]entirely undocumented.[/color]
+
+There were also old projects that awkwardly floated around the update that were poorly integrated into the game, which caused attention to be split and kept us trapped in the loop of reiterating over and over and getting stuck over poor decisions made far too long ago.
+
+The kicker, though, in my opinion, that is making this update the seven-headed hydra [color:#424242](or [strike]minotaur[/strike])[/color]  that it is, is the fact that the bits of content it affects are so impactful and important to the game that they must be threaded on very lightly. There have been plenty of pauses and rollbacks due to concerns about how the content will affect the game, despite the fact that we are sure it will be high quality and very fun. Not only that, but the new content has also proven to be extremely technically challenging for the dev team, but it’ll be worth it.
+
+All of this is said to attempt to put into perspective the scale of the update, even if the content additions don’t seem to be too much. In my eyes, this is probably FTC’s most difficult update thus far.
+
+[asset/images/Spookstalk.png]
+
+[asset/images/LineBreak.png]
+
+Speaking of repairs, [i]what is going on with the broken chomiks?[/i] The only reason we aren’t publishing these right now as a hotfix is that we have lost virtually all access to the original places, meaning we’d have to entirely rebuild every [gradient:outerplace]outer place[/gradient] of FTC. In that light, we feel we may as well bring some improvements to them and to the game in general — especially when it comes to the concept of an [gradient:outerplace]"outer place"[/gradient] — so these issues are going to be addressed in the update after the dex+ release.
+
+[asset/images/LineBreak.png]
+
+That pretty much wraps up what I have to say about the game. FTC is definitely not in a pretty place right now, but it isn’t hopeless, and seeing the community excitement in the server, fandom wiki, and game definitely keeps spirits high (even when we hear people expecting [color:#666666]Awakened[/color] to shadow drop next update).
+
+[chapter]★ Server stuff[/chapter]
+
+One last thing that I think is important to cover here (because it slipped my mind when I wrote the initial devlog) is a deeper dive into depth about why we wanted to ban AI in the server.
+
+First things first, allowing AI images in a community like this tends to make people “test the waters” in a malicious way. When a new member sees the community allow low-effort AI shitposts, they might see juuuust how far they can take the low-quality humour until it turns heads. That, and the usage of these AI images, would often devolve the chat into an unengaging stream of brainrot instead of promoting actual discussion or conversation.
+
+Not only that, but FTC is inherently an art-oriented community, from the fact that we, as a dev team, reject the use of AI when working on the game, in a climate where Opus and Astra are making AI factory-line cash grab games take the spotlight on the Roblox front page over truly creative passion projects, to the fact that the game is centered around members contributing to the game with their art, which sometimes takes them hours! With the focus we place on art, it is impossible for us to comfortably allow AI in the server when it is the central factor that is killing the platform we are making FTC on. The influx of AI games has caused the company to completely shift their focus to empowering AI creators over us, protecting AI instead of protecting the real developers by adding features like roblox create which are aggressively promoted on the front page. Not only that but AI is opening doors for people to maliciously create rips of games in a few prompts, sometimes even releasing the game [i]before[/i] the creators which happened recently to the game Pizza Hour! These injustices are why we cannot allow the use of artificial intelligence in the server.
+
+[asset/images/LineBreak.png]
+
+Hopefully all of this was a fun read; see you on the next devlog and have a haunted Halloween
+
+
