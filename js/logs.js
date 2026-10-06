@@ -178,6 +178,11 @@ function parseMarkup(text) {
     );
 
     html = html.replace(
+    /\[color:(#[0-9a-f]{3,8})\]([\s\S]*?)\[\/color\]/gi,
+    '<span style="color: $1;">$2</span>'
+    );
+
+    html = html.replace(
         /\[gradient:([a-z0-9_-]+)\]([\s\S]*?)\[\/gradient\]/gi,
         (match, name, content) => {
             const gradient = gradients[name.toLowerCase()];
@@ -189,6 +194,8 @@ function parseMarkup(text) {
             return `<span style="background: linear-gradient(to right, ${gradient[0]}, ${gradient[1]}); -webkit-background-clip: text; background-clip: text; color: transparent;">${content}</span>`;
         }
     );
+
+
 
     return html;
 }
